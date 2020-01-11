@@ -1,0 +1,391 @@
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>How Rust got to the top.</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="../assets/built/screen.css?v=6086185899">
+
+    <link rel="shortcut icon" href="../favicon.png" type="image/png">
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="amphtml" href="amp/index.html">
+    
+    <meta property="og:site_name" content="Reverie">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="How Rust got to the top.">
+    <meta property="og:description" content="Technological design should focus on the people using it. Instead, we've optimized it for the machines that they're used on, instead of the other way around.">
+    <meta property="og:url" content="http://localhost:2368/how-rustlang-got-to-the-top/">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1514396609188-7890859d5225?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=2000&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ">
+    <meta property="article:published_time" content="2020-01-11T02:29:14.000Z">
+    <meta property="article:modified_time" content="2020-01-11T03:24:31.000Z">
+    <meta property="article:tag" content="Programming">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="How Rust got to the top.">
+    <meta name="twitter:description" content="Technological design should focus on the people using it. Instead, we've optimized it for the machines that they're used on, instead of the other way around.">
+    <meta name="twitter:url" content="http://localhost:2368/how-rustlang-got-to-the-top/">
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1514396609188-7890859d5225?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=2000&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Rishi Kothari">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="Programming">
+    <meta name="twitter:site" content="@rishiosaur">
+    <meta name="twitter:creator" content="@rishiosaur">
+    <meta property="og:image:width" content="2000">
+    <meta property="og:image:height" content="1498">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Reverie",
+        "logo": "http://localhost:2368/content/images/2020/01/reverieLogo-3.png"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Rishi Kothari",
+        "image": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2368/content/images/2020/01/74948897_240954253542589_1511662345399667905_n.jpg",
+            "width": 1080,
+            "height": 1080
+        },
+        "url": "http://localhost:2368/author/rishi/",
+        "sameAs": [
+            "http://rishi.js.org",
+            "https://twitter.com/rishiosaur"
+        ]
+    },
+    "headline": "How Rust got to the top.",
+    "url": "http://localhost:2368/how-rustlang-got-to-the-top/",
+    "datePublished": "2020-01-11T02:29:14.000Z",
+    "dateModified": "2020-01-11T03:24:31.000Z",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://images.unsplash.com/photo-1514396609188-7890859d5225?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=2000&fit=max&ixid=eyJhcHBfaWQiOjExNzczfQ",
+        "width": 2000,
+        "height": 1498
+    },
+    "keywords": "Programming",
+    "description": "Technological design should focus on the people using it. Instead, we&#x27;ve optimized it for the machines that they&#x27;re used on, instead of the other way around.",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://localhost:2368/"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 3.2">
+    <link rel="alternate" type="application/rss+xml" title="Reverie" href="../rss/index.html">
+    
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+</head>
+<body class="post-template tag-programming">
+
+    <div class="site-wrapper">
+
+        
+
+<header class="site-header">
+    <div class="outer site-nav-main">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left-wrapper">
+        <div class="site-nav-left">
+                <a class="site-nav-logo" href="../"><img src="../content/images/2020/01/reverieLogo-3.png" alt="Reverie"></a>
+            <div class="site-nav-content">
+                    <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="../">Home</a></li>
+    <li class="nav-mathematics" role="menuitem"><a href="../tag/mathematics/">Mathematics</a></li>
+    <li class="nav-author" role="menuitem"><a href="../author/rishi/">Author</a></li>
+</ul>
+
+                    <span class="nav-post-title ">How Rust got to the top.</span>
+            </div>
+        </div>
+    </div>
+    <div class="site-nav-right">
+            <ul class="nav" role="menu">
+    <li class="nav-about" role="menuitem"><a href="http://localhost:2368/about/">About</a></li>
+</ul>
+
+
+    </div>
+</nav>
+    </div>
+</div></header>
+
+
+<main id="site-main" class="site-main outer">
+    <div class="inner">
+
+        <article class="post-full post tag-programming featured ">
+
+            <header class="post-full-header">
+
+                <section class="post-full-tags">
+                    <a href="../tag/programming/">Programming</a>
+                </section>
+
+                <h1 class="post-full-title">How Rust got to the top.</h1>
+
+                <p class="post-full-custom-excerpt">Technological design should focus on the people using it. Instead, we've optimized it for the machines that they're used on, instead of the other way around.</p>
+
+                <div class="post-full-byline">
+
+                    <section class="post-full-byline-content">
+
+                        <ul class="author-list">
+                            <li class="author-list-item">
+
+                                <div class="author-card">
+                                    <img class="author-profile-image" src="../content/images/size/w100/2020/01/74948897_240954253542589_1511662345399667905_n.jpg" alt="Rishi Kothari">
+                                    <div class="author-info">
+                                        <div class="bio">
+                                            <h2>Rishi Kothari</h2>
+                                            <p>A developer growing too tall.</p>
+                                            <p><a href="../author/rishi/">More posts</a> by Rishi Kothari.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <a href="../author/rishi/" class="author-avatar">
+                                    <img class="author-profile-image" src="../content/images/size/w100/2020/01/74948897_240954253542589_1511662345399667905_n.jpg" alt="Rishi Kothari">
+                                </a>
+
+                            </li>
+                        </ul>
+
+                        <section class="post-full-byline-meta">
+                            <h4 class="author-name"><a href="../author/rishi/">Rishi Kothari</a></h4>
+                            <div class="byline-meta-content">
+                                <time class="byline-meta-date" datetime="2020-01-10">10 Jan 2020</time>
+                                <span class="byline-reading-time"><span class="bull">•</span> 3 min read</span>
+                            </div>
+                        </section>
+
+                    </section>
+
+
+                </div>
+            </header>
+
+            <figure class="post-full-image">
+                <img srcset="https://images.unsplash.com/photo-1514396609188-7890859d5225?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=2000&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ 300w,
+                            https://images.unsplash.com/photo-1514396609188-7890859d5225?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=2000&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ 600w,
+                            https://images.unsplash.com/photo-1514396609188-7890859d5225?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=2000&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ 1000w,
+                            https://images.unsplash.com/photo-1514396609188-7890859d5225?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=2000&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ 2000w" sizes="(max-width: 800px) 400px,
+                        (max-width: 1170px) 1170px,
+                            2000px" src="https://images.unsplash.com/photo-1514396609188-7890859d5225?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=2000&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ" alt="How Rust got to the top.">
+            </figure>
+
+            <section class="post-full-content">
+                <div class="post-content">
+                    <figure class="kg-card kg-bookmark-card kg-card-hascaption"><a class="kg-bookmark-container" href="https://music.apple.com/ca/album/petal/968587126?i=968587135"><div class="kg-bookmark-content"><div class="kg-bookmark-title">‎Xxv by Broke For Free</div><div class="kg-bookmark-description">Song · 4:00 min · 2014. Available with an Apple Music subscription. Try it free.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="https://music.apple.com/favicon.ico"><span class="kg-bookmark-publisher">Apple Music</span></div></div><div class="kg-bookmark-thumbnail"><img src="https://is3-ssl.mzstatic.com/image/thumb/Music3/v4/ed/26/ca/ed26cadf-83f5-1e46-a144-0246559c5d50/889211401642.jpg/1200x630wp.png"></div></a><figcaption>Music to listen to while reading this.</figcaption></figure><p>When I started programming in 2013, I didn't have <em>a clue</em> where to begin. As a result, I did what a lot of people did: pick the easiest option.</p><p>Of course, in 2013, there weren't too many options for me.</p><p>iOS development was off the table, as I didn't have a Mac back then, and so was Windows development (I took one look at the C# docs, and I've <em>literally </em>never looked back).</p><p>However, web development looked to be a pretty cool field to go into: I could do it on my laptop, and build products that were cross-compatible. But most importantly,<strong> it was easy.</strong></p><figure class="kg-card kg-code-card"><pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html&gt;
+    &lt;p&gt;Hello World&lt;/p&gt;
+&lt;/html&gt;</code></pre><figcaption>It was this simple to get started.</figcaption></figure><p>However, as time progressed, the web world became very different. Times change, and now I regularly see fights break out at hackathons over which framework is the best (by the way, it's Angular). JavaScript has become a self-created monster, lacking nearly <em>any</em> tools for structured, consistent programming and techniques.</p><p>As a result, I burned out. I didn't get the same rewarding feeling building something that I had when I was just starting out. I started to dread working with the tech stack that I had chosen; there were always too many things to keep track of, and not enough people to help out.</p><p>In hindsight, it wasn't the <em>easiness</em> that brought me to web development, it was the human connection. In 2013, there were very few frameworks and library (that were viable for production code), and so everyone focused on a couple of things, and there was clear, consistent, human-centric design. This idea was echoed all throughout the ecosystem, from the languages to the library design and docs.</p><p>We've all but lost this humanity in web development, which is why I needed a refresher. </p><p>I quenched my thirst for this humanity in tech with mathematics and natural languages. Instead of studying code, I studied the dynamics that humans used to communicate, be it through English, French, or function notation.</p><p>Most of that studying was devoted to working on <a href="https://github.com/rishiosaur/phi-design">Philang</a> with <a href="http://localhost:2368/how-rustlang-got-to-the-top/andrewgao.tech">Andrew Gao</a> from Hack Club, but I got something else out of it: Rust.</p><hr><blockquote>Rust is one of the fastest languages out there, just hovering near C and quite a far way away from C++. However, what makes it stand out is the fact that it has type safety, embedded systems compatibility, and a whole host of other factors.</blockquote><p>However, what made Rust stand out for me was the language itself. Like I said before, I was focusing on human-focused design at the time. Because of this, Rust struck me quite hard.</p><p>You see, Rust did what the web had done in the old days: crafted a well-knit community and put its developers first. But more importantly, its language was, quite frankly, beautiful.</p><p>Rust's syntax is incredibly human-centric, and variables are the smallest example of this.</p><figure class="kg-card kg-code-card"><pre><code class="language-rust">// Mutable variable definition
+let mut x = 5;
+
+// Immutable variable definition
+let y = 6;
+
+// Constant
+const z = 7;</code></pre><figcaption>The total amount of variable/constant keywords in Rust.</figcaption></figure><p>You only really need 2 keywords, both of which are pretty self-explanatory. This type of design brought me back to when I was messing around with JS in elementary school, and I realized that <em>this </em>was what I was looking for.</p><p>Rust has some of the most thoughtful syntax that I've come across in a long time, from implying that all variables should be immutable by default, to the way that garbage collection works.</p><p>Its success proves one thing: we've been working on optimizing our languages for computers so much that we've forgotten to optimize it for <em>ourselves.</em></p>
+                </div>
+            </section>
+
+
+
+        </article>
+
+    </div>
+</main>
+
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+                <article class="read-next-card">
+                    <header class="read-next-card-header">
+                        <h3><span>More in</span> <a href="../tag/programming/">Programming</a></h3>
+                    </header>
+                    <div class="read-next-card-content">
+                        <ul>
+                            <li>
+                                <h4><a href="../beginner-epsilon/">Getting started with Epsilon</a></h4>
+                                <div class="read-next-card-meta">
+                                    <p><time datetime="2020-01-09">9 Jan 2020</time> –
+                                        1 min read</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <footer class="read-next-card-footer">
+                        <a href="../tag/programming/">1 post
+                            →</a>
+                    </footer>
+                </article>
+
+
+                <article class="post-card post tag-mathematics tag-programming ">
+
+    <a class="post-card-image-link" href="../beginner-epsilon/">
+        <img class="post-card-image" srcset="../content/images/size/w300/2020/01/IMG_3208.jpg 300w,
+                   ../content/images/size/w600/2020/01/IMG_3208.jpgg 600w,
+                  ../content/images/size/w1000/2020/01/IMG_3208.jpgpg 1000w,
+                 ../content/images/size/w2000/2020/01/IMG_3208.jpgjpg 2000w" sizes="(max-width: 1000px) 400px, 700px" src="../content/images/size/w600/2020/01/IMG_3208.jpg" alt="Getting started with Epsilon">
+    </a>
+
+    <div class="post-card-content">
+
+        <a class="post-card-content-link" href="../beginner-epsilon/">
+
+            <header class="post-card-header">
+                    <div class="post-card-primary-tag">Mathematics</div>
+                <h2 class="post-card-title">Getting started with Epsilon</h2>
+            </header>
+
+            <section class="post-card-excerpt">
+                    <p>A beginner's guide to the Epsilon Library.</p>
+            </section>
+
+        </a>
+
+        <footer class="post-card-meta">
+            <ul class="author-list">
+                <li class="author-list-item">
+            
+                    <div class="author-name-tooltip">
+                        Rishi Kothari
+                    </div>
+            
+                    <a href="../author/rishi/" class="static-avatar">
+                        <img class="author-profile-image" src="../content/images/size/w100/2020/01/74948897_240954253542589_1511662345399667905_n.jpg" alt="Rishi Kothari">
+                    </a>
+                </li>
+            </ul>
+            <div class="post-card-byline-content">
+                <span><a href="../author/rishi/">Rishi Kothari</a></span>
+                <span class="post-card-byline-date"><time datetime="2020-01-09">9 Jan 2020</time> <span class="bull">•</span> 1 min read</span>
+            </div>
+        </footer>
+
+    </div>
+
+</article>
+        </div>
+    </div>
+</aside>
+
+
+
+
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="../">Reverie</a> © 2020</section>
+                <nav class="site-footer-nav">
+                    <a href="../">Latest Posts</a>
+                    
+                    <a href="https://twitter.com/rishiosaur" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+    </script>
+    <script src="../assets/built/casper.js?v=6086185899"></script>
+
+    <script>
+        // Parse the URL parameter
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        // Give the parameter a variable name
+        var action = getParameterByName('action');
+
+        $(document).ready(function () {
+            if (action == 'subscribe') {
+                $('body').addClass("subscribe-success");
+            }
+
+            $('.subscribe-success-message .subscribe-close').click(function () {
+                $('.subscribe-success-message').addClass('close');
+            });
+
+            // Reset form on opening subscrion overlay
+            $('.subscribe-button').click(function() {
+                $('.subscribe-overlay form').removeClass();
+                $('.subscribe-email').val('');
+            });
+        });
+    </script>
+
+    <script>
+    $(document).ready(function () {
+        // FitVids - start
+        var $postContent = $(".post-full-content");
+        $postContent.fitVids();
+        // FitVids - end
+
+        // Replace nav with title on scroll - start
+        Casper.stickyNavTitle({
+            navSelector: '.site-nav-main',
+            titleSelector: '.post-full-title',
+            activeClass: 'nav-post-title-active'
+        });
+        // Replace nav with title on scroll - end
+
+        // Hover on avatar
+        var hoverTimeout;
+        $('.author-list-item').hover(function () {
+            var $this = $(this);
+
+            clearTimeout(hoverTimeout);
+
+            $('.author-card').removeClass('hovered');
+            $(this).children('.author-card').addClass('hovered');
+
+        }, function () {
+            var $this = $(this);
+
+            hoverTimeout = setTimeout(function () {
+                $this.children('.author-card').removeClass('hovered');
+            }, 800);
+        });
+    });
+</script>
+
+
+    <script type="text/javascript" async src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [["$", "$"], ["\\(", "\\)"]],
+        processEscapes: true
+    }
+});
+</script>
+<script>
+  AOS.init();
+</script>
+
+</body>
